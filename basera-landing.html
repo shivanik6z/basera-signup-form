@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basera — Find your flat. Find your people.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F7F3EE;
+    --warm-white: #FDFAF7;
+    --terracotta: #C4622D;
+    --terracotta-light: #E8835A;
+    --terracotta-dark: #9E4A20;
+    --charcoal: #1E1A17;
+    --charcoal-mid: #3D3530;
+    --muted: #8A7E76;
+    --border: #E2D9D0;
+    --success: #2D6A4F;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--charcoal);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 4rem;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(247,243,238,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--charcoal);
+    letter-spacing: -0.01em;
+  }
+
+  .logo span { color: var(--terracotta); }
+
+  .nav-cta {
+    background: var(--charcoal);
+    color: var(--cream);
+    border: none;
+    padding: 0.55rem 1.4rem;
+    border-radius: 100px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    text-decoration: none;
+  }
+
+  .nav-cta:hover { background: var(--terracotta); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 7rem 4rem 4rem;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -120px;
+    top: -80px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(196,98,45,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    left: -80px;
+    bottom: -100px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(196,98,45,0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .hero-left { position: relative; z-index: 1; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(196,98,45,0.1);
+    color: var(--terracotta-dark);
+    padding: 0.35rem 0.9rem;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 4.2rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--charcoal);
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--terracotta);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+  }
+
+  .proof-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .proof-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .proof-item svg { color: var(--terracotta); flex-shrink: 0; }
+
+  /* FORM CARD */
+  .form-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 40px rgba(30,26,23,0.08), 0 1px 0 rgba(255,255,255,0.8) inset;
+    position: relative;
+    z-index: 1;
+  }
+
+  .form-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin-bottom: 0.35rem;
+  }
+
+  .form-sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 1.75rem;
+    font-weight: 300;
+  }
+
+  /* TOGGLE */
+  .toggle-label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--charcoal-mid);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .toggle-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 1.25rem;
+  }
+
+  .toggle-btn {
+    padding: 0.75rem;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .toggle-btn.active {
+    border-color: var(--terracotta);
+    background: rgba(196,98,45,0.06);
+    color: var(--terracotta-dark);
+    font-weight: 500;
+  }
+
+  .toggle-btn:hover:not(.active) {
+    border-color: var(--charcoal-mid);
+    color: var(--charcoal);
+  }
+
+  /* INPUTS */
+  .field { margin-bottom: 1.25rem; }
+
+  .field label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--charcoal-mid);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .phone-wrap {
+    display: flex;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+    background: white;
+  }
+
+  .phone-wrap:focus-within { border-color: var(--terracotta); }
+
+  .phone-prefix {
+    padding: 0 1rem;
+    background: var(--cream);
+    border-right: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--muted);
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  .phone-wrap input {
+    flex: 1;
+    padding: 0.85rem 1rem;
+    border: none;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--charcoal);
+    background: transparent;
+    -webkit-appearance: none;
+  }
+
+  .phone-wrap input::placeholder { color: #BDB5AE; }
+
+  select {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    color: var(--charcoal);
+    background: white;
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A7E76' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    transition: border-color 0.2s;
+  }
+
+  select:focus { border-color: var(--terracotta); }
+  select option { color: var(--charcoal); }
+
+  /* SUBMIT */
+  .submit-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    margin-top: 0.5rem;
+    letter-spacing: 0.01em;
+  }
+
+  .submit-btn:hover { background: var(--terracotta-dark); transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+
+  .form-note {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 0.85rem;
+    font-weight: 300;
+  }
+
+  /* SUCCESS STATE */
+  .success-state {
+    display: none;
+    text-align: center;
+    padding: 2rem 0;
+  }
+
+  .success-icon {
+    width: 56px;
+    height: 56px;
+    background: rgba(45,106,79,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+  }
+
+  .success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    color: var(--charcoal);
+    margin-bottom: 0.5rem;
+  }
+
+  .success-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  /* WHY SECTION */
+  .why {
+    padding: 5rem 4rem;
+    background: var(--charcoal);
+    color: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .why::before {
+    content: 'बसेरा';
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(8rem, 15vw, 14rem);
+    color: rgba(255,255,255,0.03);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .why-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--terracotta-light);
+    margin-bottom: 1rem;
+  }
+
+  .why h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 3rem;
+    max-width: 500px;
+  }
+
+  .reasons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .reason {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 1.5rem;
+  }
+
+  .reason-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    color: var(--terracotta-light);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+    font-style: italic;
+  }
+
+  .reason-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .reason-desc {
+    font-size: 0.85rem;
+    color: rgba(247,243,238,0.5);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 4rem;
+    background: var(--charcoal);
+    border-top: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: rgba(247,243,238,0.6);
+  }
+
+  .footer-logo span { color: var(--terracotta-light); }
+
+  .footer-note {
+    font-size: 0.78rem;
+    color: rgba(247,243,238,0.3);
+    font-weight: 300;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; gap: 2.5rem; min-height: auto; }
+    .hero::before, .hero::after { display: none; }
+    .hero-sub { max-width: 100%; }
+    .why { padding: 3.5rem 1.5rem; }
+    .reasons { grid-template-columns: 1fr; gap: 1.5rem; }
+    .why::before { display: none; }
+    footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem; text-align: center; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-left > * {
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .eyebrow { animation-delay: 0.1s; }
+  h1 { animation-delay: 0.2s; }
+  .hero-sub { animation-delay: 0.3s; }
+  .proof-row { animation-delay: 0.4s; }
+  .form-card { animation: fadeUp 0.6s 0.25s ease both; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">base<span>ra</span></div>
+  <a href="#signup" class="nav-cta">Join waitlist</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="eyebrow">Launching in Hyderabad</div>
+    <h1>Find your flat.<br><em>Find your people.</em></h1>
+    <p class="hero-sub">
+      No brokers. No fake listings. No awkward cold calls.<br>
+      Basera uses AI to surface real flats and real flatmates — matched to how you actually live.
+    </p>
+    <div class="proof-row">
+      <div class="proof-item">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+        Zero brokerage
+      </div>
+      <div class="proof-item">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+        AI-matched listings
+      </div>
+      <div class="proof-item">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+        Verified flatmates
+      </div>
+    </div>
+  </div>
+
+  <div class="form-card" id="signup">
+    <div class="form-main">
+      <p class="form-title">Get early access</p>
+      <p class="form-sub">We'll WhatsApp you the moment we go live in your area.</p>
+
+      <span class="toggle-label">I'm looking for — (select all that apply)</span>
+      <div class="toggle-group">
+        <button class="toggle-btn active" id="btn-flat" onclick="selectToggle('flat')">🏠 Flat</button>
+        <button class="toggle-btn" id="btn-flatmate" onclick="selectToggle('flatmate')">🤝 Flatmate</button>
+      </div>
+
+      <div class="field">
+        <label for="phone">WhatsApp number</label>
+        <div class="phone-wrap">
+          <span class="phone-prefix">🇮🇳 +91</span>
+          <input type="tel" id="phone" placeholder="98765 43210" maxlength="10" inputmode="numeric">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="area">Area in Hyderabad</label>
+        <select id="area">
+          <option value="" disabled selected>Select your preferred area</option>
+          <option value="madhapur">Madhapur</option>
+          <option value="kondapur">Kondapur</option>
+          <option value="gachibowli">Gachibowli</option>
+          <option value="hitech-city">HiTech City</option>
+          <option value="banjara-hills">Banjara Hills</option>
+          <option value="jubilee-hills">Jubilee Hills</option>
+          <option value="ameerpet">Ameerpet</option>
+          <option value="begumpet">Begumpet</option>
+          <option value="sainikpuri">Sainikpuri / Secunderabad</option>
+          <option value="other">Somewhere else in Hyd</option>
+        </select>
+      </div>
+
+      <button class="submit-btn" onclick="handleSubmit()">Reserve my spot →</button>
+      <p class="form-note">No spam. We'll only message you when Basera is live.</p>
+    </div>
+
+    <div class="success-state" id="successState">
+      <div class="success-icon">
+        <svg width="24" height="24" fill="none" stroke="#2D6A4F" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <p class="success-title">You're on the list.</p>
+      <p class="success-sub">We'll WhatsApp you the moment Basera goes live in your area.<br>Sit tight — good things are coming. 🏠</p>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <p class="why-label">Why Basera</p>
+  <h2>Renting in India is broken.<br>We're fixing it.</h2>
+  <div class="reasons">
+    <div class="reason">
+      <div class="reason-num">01</div>
+      <div class="reason-title">AI finds listings you can't</div>
+      <div class="reason-desc">Our agent scans Facebook groups, WhatsApp networks, and local listings in real time — so you see flats before they're gone, without lifting a finger.</div>
+    </div>
+    <div class="reason">
+      <div class="reason-num">02</div>
+      <div class="reason-title">Matched to how you live</div>
+      <div class="reason-desc">Early riser or night owl? Vegetarian household? Work from home? We match you with flatmates whose lifestyle actually fits yours — not just their budget.</div>
+    </div>
+    <div class="reason">
+      <div class="reason-num">03</div>
+      <div class="reason-title">Zero brokers. Ever.</div>
+      <div class="reason-desc">No middlemen taking a month's rent. No fake listings. No calls from agents who don't listen. Just you, the flat, and a fair deal.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">base<span>ra</span></div>
+  <p class="footer-note">© 2025 Basera. Hyderabad, India.</p>
+</footer>
+
+<script>
+  const selected = new Set(['flat']);
+
+  function selectToggle(value) {
+    if (selected.has(value)) {
+      if (selected.size === 1) return; // must keep at least one selected
+      selected.delete(value);
+    } else {
+      selected.add(value);
+    }
+    document.getElementById('btn-flat').classList.toggle('active', selected.has('flat'));
+    document.getElementById('btn-flatmate').classList.toggle('active', selected.has('flatmate'));
+  }
+
+  function handleSubmit() {
+    const phone = document.getElementById('phone').value.trim();
+    const area = document.getElementById('area').value;
+    const lookingFor = Array.from(selected).join(',');
+
+    if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
+      alert('Please enter a valid 10-digit WhatsApp number.');
+      return;
+    }
+    if (!area) {
+      alert('Please select your preferred area.');
+      return;
+    }
+
+    // In production: replace this with your actual API call / Google Sheets webhook / Typeform etc.
+    console.log('Signup:', { phone: '+91' + phone, area, lookingFor });
+
+    document.querySelector('.form-main').style.display = 'none';
+    document.getElementById('successState').style.display = 'block';
+  }
+
+  // Smooth scroll for nav CTA
+  document.querySelector('.nav-cta').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('signup').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // Only allow digits in phone field
+  document.getElementById('phone').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '').slice(0, 10);
+  });
+</script>
+</body>
+</html>
