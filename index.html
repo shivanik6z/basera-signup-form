@@ -484,6 +484,38 @@
     font-weight: 300;
   }
 
+  .area-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.area-btn {
+  padding: 0.5rem 0.85rem;
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  background: transparent;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.area-btn.active {
+  border-color: var(--terracotta);
+  background: rgba(94,53,177,0.06);
+  color: var(--terracotta-dark);
+  font-weight: 500;
+}
+
+.area-btn:hover:not(.active) {
+  border-color: var(--charcoal-mid);
+  color: var(--charcoal);
+}
+
   /* RESPONSIVE */
   @media (max-width: 768px) {
     nav { padding: 1.25rem 1.5rem; }
@@ -564,37 +596,28 @@
       </div>
 
       <div class="field">
-        <label for="area">Area in Hyderabad</label>
-        <select id="area">
-          <option value="" disabled selected>Select your preferred area</option>
-          <optgroup label="West Hyderabad">
-            <option value="madhapur">Madhapur</option>
-            <option value="kondapur">Kondapur</option>
-            <option value="gachibowli">Gachibowli</option>
-            <option value="hitech-city">HiTech City</option>
-            <option value="manikonda">Manikonda</option>
-            <option value="nallagandla">Nallagandla / Tellapur</option>
-            <option value="financial-district">Puppalguda / Financial District</option>
-          </optgroup>
-          <optgroup label="Central Hyderabad">
-            <option value="banjara-hills">Banjara Hills</option>
-            <option value="jubilee-hills">Jubilee Hills</option>
-            <option value="ameerpet">Ameerpet</option>
-            <option value="sr-nagar">SR Nagar</option>
-            <option value="begumpet">Begumpet</option>
-          </optgroup>
-          <optgroup label="North Hyderabad">
-            <option value="kukatpally">Kukatpally / KPHB</option>
-            <option value="miyapur">Miyapur</option>
-            <option value="kompally">Kompally</option>
-            <option value="sainikpuri">Sainikpuri / Secunderabad</option>
-          </optgroup>
-          <optgroup label="East Hyderabad">
-            <option value="uppal">Uppal / Nagole</option>
-            <option value="lb-nagar">LB Nagar</option>
-          </optgroup>
-          <option value="other">Somewhere else in Hyd</option>
-        </select>
+          <label>Area in Hyderabad</label>
+          <div class="area-grid" id="areaGrid">
+            <button type="button" class="area-btn" data-value="madhapur">Madhapur</button>
+            <button type="button" class="area-btn" data-value="kondapur">Kondapur</button>
+            <button type="button" class="area-btn" data-value="gachibowli">Gachibowli</button>
+            <button type="button" class="area-btn" data-value="hitech-city">HiTech City</button>
+            <button type="button" class="area-btn" data-value="nallagandla">Nallagandla / Tellapur</button>
+            <button type="button" class="area-btn" data-value="puppalguda">Puppalguda / Financial District</button>
+            <button type="button" class="area-btn" data-value="manikonda">Manikonda</button>
+            <button type="button" class="area-btn" data-value="banjara-hills">Banjara Hills</button>
+            <button type="button" class="area-btn" data-value="jubilee-hills">Jubilee Hills</button>
+            <button type="button" class="area-btn" data-value="ameerpet">Ameerpet</button>
+            <button type="button" class="area-btn" data-value="begumpet">Begumpet</button>
+            <button type="button" class="area-btn" data-value="sr-nagar">SR Nagar</button>
+            <button type="button" class="area-btn" data-value="kukatpally">Kukatpally / KPHB</button>
+            <button type="button" class="area-btn" data-value="miyapur">Miyapur</button>
+            <button type="button" class="area-btn" data-value="kompally">Kompally</button>
+            <button type="button" class="area-btn" data-value="sainikpuri">Sainikpuri / Sec'bad</button>
+            <button type="button" class="area-btn" data-value="uppal">Uppal / Nagole</button>
+            <button type="button" class="area-btn" data-value="lb-nagar">LB Nagar</button>
+            <button type="button" class="area-btn" data-value="other">Somewhere else</button>
+          </div>
       </div>
 
       <button class="submit-btn" onclick="handleSubmit()">Reserve my spot →</button>
@@ -639,6 +662,11 @@
 </footer>
 
 <script>
+  document.querySelectorAll('.area-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('active');
+  });
+});
   const selected = new Set(['flat']);
 
   function selectToggle(value) {
@@ -654,7 +682,8 @@
 
   async function handleSubmit() {
     const phone = document.getElementById('phone').value.trim();
-    const area = document.getElementById('area').value;
+    const area = Array.from(document.querySelectorAll('.area-btn.active'))
+      .map(b => b.dataset.value).join(',');
     const lookingFor = Array.from(selected).join(',');
 
     if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
@@ -662,7 +691,7 @@
       return;
     }
     if (!area) {
-      alert('Please select your preferred area.');
+      alert('Please select at least one area.');
       return;
     }
 
