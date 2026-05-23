@@ -635,7 +635,7 @@
     document.getElementById('btn-flatmate').classList.toggle('active', selected.has('flatmate'));
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     const phone = document.getElementById('phone').value.trim();
     const area = document.getElementById('area').value;
     const lookingFor = Array.from(selected).join(',');
