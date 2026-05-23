@@ -652,17 +652,17 @@
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx91gN5AclgidO5d00IdA636Nxxe-IQkpG92Ar-Fq7-5ux2hI6xwCzgwM8JWnn95VPx/exec';
 
     try {
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',   // ← critical for Google Apps Script
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          phone: '+91' + phone,
-          area,
-          lookingFor,
-          timestamp: new Date().toISOString()
-        })
-      });
+      const params = new URLSearchParams({
+      phone: '+91' + phone,
+      area,
+      lookingFor,
+      timestamp: new Date().toISOString()
+    });
+
+    await fetch(GOOGLE_SCRIPT_URL + '?' + params.toString(), {
+      method: 'GET',
+      mode: 'no-cors'
+    });
     } catch (err) {
       console.error('Submission error:', err);
     }
